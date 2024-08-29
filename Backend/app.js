@@ -13,14 +13,6 @@ const hpp = require("hpp");
 const mongoSanitizer = require("express-mongo-sanitize");
 const rateLimit = require("express-rate-limit");
 
-//Middleware
-// app.use(
-//   cors({
-//     origin: ["https://bickroy-clone-jcl5.vercel.app"],
-//     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-//     credentials: true, // If you're using cookies or sessions
-//   })
-// );
 app.use(cors());
 app.use(helmet());
 app.use(hpp());
