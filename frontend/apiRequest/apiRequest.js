@@ -1,5 +1,5 @@
 import axios from "axios";
-let BaseURL = "http://localhost:8000/api/v1";
+let BaseURL = "https://antopolis-dusky.vercel.app/api/v1";
 
 //read category
 export const categoryListRequest = async () => {
