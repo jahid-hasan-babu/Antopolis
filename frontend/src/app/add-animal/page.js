@@ -1,6 +1,9 @@
 "use client";
-import { useState } from "react";
-import { createAnimalRequest } from "../../../apiRequest/apiRequest";
+import { useEffect, useState } from "react";
+import {
+  categoryListRequest,
+  createAnimalRequest,
+} from "../../../apiRequest/apiRequest";
 import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
@@ -13,6 +16,15 @@ export default function Animal() {
     category: "",
     image: "",
   });
+  const [category, setCategory] = useState([]);
+
+  // Fetch all categories on component mount
+  useEffect(() => {
+    (async () => {
+      let res = await categoryListRequest();
+      setCategory(res);
+    })();
+  }, []);
 
   const router = useRouter();
 
@@ -26,11 +38,13 @@ export default function Animal() {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setFileName(file.name);
-    TransformFile(file);
+    if (file) {
+      setFileName(file.name);
+      transformFile(file);
+    }
   };
 
-  const TransformFile = (file) => {
+  const transformFile = (file) => {
     const reader = new FileReader();
     reader.onload = () => {
       setFormData((prevState) => ({
@@ -59,7 +73,7 @@ export default function Animal() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen ">
+    <div className="flex justify-center items-center min-h-screen">
       <div className="bg-white rounded-2xl w-[300px] py-9 px-5 shadow-lg">
         <h1 className="text-md font-medium mb-4 text-center">Add Animal</h1>
         <form onSubmit={handleSubmit}>
@@ -94,19 +108,19 @@ export default function Animal() {
               Upload
             </label>
           </div>
-          {/* you can add category when you create an animal it helps you to sorting data  */}
-          {/* <select
+          <select
             className="w-full mb-4 py-3 px-2 rounded bg-gray-100 placeholder-black border border-gray-300"
             name="category"
             value={formData.category}
             onChange={handleInputChange}
           >
             <option value="">Select Category</option>
-            <option value="Land Animal">Land Animal</option>
-            <option value="Bird">Bird</option>
-            <option value="Fish">Fish</option>
-            <option value="Insect">Insect</option>
-          </select> */}
+            {category.map((item, i) => (
+              <option key={i} value={item.categoryName}>
+                {item.categoryName}
+              </option>
+            ))}
+          </select>
           <button
             className="w-full py-3 px-2 rounded bg-black text-white hover:bg-gray-800 transition"
             type="submit"
