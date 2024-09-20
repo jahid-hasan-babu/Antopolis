@@ -16,21 +16,44 @@ export default function Category() {
     setCategoryData({ ...categoryData, categoryName: e.target.value });
   };
 
+  // const handleSave = async () => {
+  //   try {
+  //     const res = await categoryCrateRequest(categoryData);
+
+  //     if (res.data.status === "success") {
+  //       toast.success(res.data.message);
+  //       setTimeout(() => {
+  //         router.push("/");
+  //       }, 3000); // Delay the navigation to allow toast to show
+  //     } else if (res.data.status === "fail") {
+  //       toast.error(res.data.message); // Show error message for duplicate category
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   const handleSave = async () => {
     try {
       const res = await categoryCrateRequest(categoryData);
 
-      if (res.data.status === "success") {
-        toast.success(res.data.message); // Show success message from backend
+      // Check the response status and message
+      if (res.status === "success") {
+        toast.success(res.message);
 
-        // Delay navigation to allow toast message to display
+        // Delay the navigation to allow the toast message to be seen
         setTimeout(() => {
           router.push("/");
-        }, 5000);
+        }, 3000);
+      } else if (res.status === "fail") {
+        // Handle error from backend (like duplicate category)
+        toast.error(res.message);
       } else {
-        toast.error(res.data.message); // Show error message from backend
+        // Handle unexpected response
+        toast.error("Unexpected response format.");
       }
     } catch (error) {
+      // Handle any network or server errors
       toast.error("Failed to create category.");
     }
   };

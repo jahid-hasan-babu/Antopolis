@@ -15,17 +15,18 @@ export const categoryListRequest = async () => {
   }
 };
 
-//create category
 export const categoryCrateRequest = async (postBody) => {
   try {
     let res = await axios.post(BaseURL + "/create-category", postBody);
-    if (res.status === 201) {
-      return true;
-    } else {
-      return false;
-    }
+    return res.data;
   } catch (error) {
-    return false;
+    // If there's an error, return the error message from the response if it exists
+    if (error.response && error.response.data) {
+      return error.response.data;
+    } else {
+      // Return a generic error message if there's no specific response from the backend
+      return { status: "fail", message: "Something went wrong" };
+    }
   }
 };
 
