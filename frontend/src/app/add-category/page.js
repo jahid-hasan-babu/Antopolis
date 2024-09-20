@@ -21,14 +21,14 @@ export default function Category() {
       const res = await categoryCrateRequest(categoryData);
 
       if (res.data.status === "success") {
-        toast.success("Category created successfully!");
+        toast.success(res.data.message); // Show success message from backend
 
-        // Delay the navigation to allow the toast message to be seen
+        // Delay navigation to allow toast message to display
         setTimeout(() => {
           router.push("/");
         }, 5000);
       } else {
-        toast.error(res.data.message);
+        toast.error(res.data.message); // Show error message from backend
       }
     } catch (error) {
       toast.error("Failed to create category.");

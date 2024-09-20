@@ -10,7 +10,7 @@ const createCategoryService = async (req) => {
       return { status: "fail", message: "Category name already exists" };
     }
 
-    // If category doesn't exist, create a new category
+    // Create a new category if it doesn't exist
     const newCategory = await CategoryModel.create({ categoryName });
 
     return {
