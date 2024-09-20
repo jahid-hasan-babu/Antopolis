@@ -11,7 +11,8 @@ import Image from "next/image";
 export default function Home() {
   const [category, setCategory] = useState([]);
   const [AllAnimal, setAllAnimal] = useState([]);
-  const [activeCategory, setActiveCategory] = useState("All"); // Default to "All"
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Fetch all categories on component mount
   useEffect(() => {
@@ -32,11 +33,22 @@ export default function Home() {
   // Fetch animals by selected category
   const handleCategoryClick = async (categoryName) => {
     let res;
+    setErrorMessage(""); // Reset error message
+
     if (categoryName === "All" || !categoryName) {
       res = await AllAnimalListRequest();
     } else {
       res = await fetchAnimalsByCategory(categoryName);
     }
+
+    if (res.length === 0) {
+      setErrorMessage(
+        `No animals found for the selected category: ${categoryName}`
+      );
+    } else {
+      setErrorMessage(""); // Clear the error if animals are found
+    }
+
     setAllAnimal(res);
     setActiveCategory(categoryName);
   };
@@ -84,6 +96,15 @@ export default function Home() {
           </Link>
         </div>
       </div>
+
+      {/* Display error message if no animals are found */}
+      {errorMessage && (
+        <div className="text-red-600 text-center mt-40">
+          <p>{errorMessage}</p>
+        </div>
+      )}
+
+      {/* Animal List */}
       <div className="grid grid-cols-1 mt-2 md:grid-cols-4 lg:grid-cols-6 pt-10 gap-6">
         {AllAnimal.map((item, index) => (
           <div

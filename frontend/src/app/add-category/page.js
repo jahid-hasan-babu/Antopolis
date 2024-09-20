@@ -26,7 +26,12 @@ export default function Category() {
         router.push("/");
       }, 5000);
     } catch (error) {
-      toast.error("Failed to create category.");
+      if (error.response && error.response.status === 400) {
+        // Duplicate category error from the backend
+        toast.error("Category already exists!");
+      } else {
+        toast.error("Failed to create category.");
+      }
     }
   };
 

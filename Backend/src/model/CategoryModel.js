@@ -8,6 +8,7 @@ const DataSchema = Schema(
       type: String,
       required: true,
       trim: true,
+      unique: true,
     },
   },
   { timestamps: true, versionKey: false }

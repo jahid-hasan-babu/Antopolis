@@ -6,7 +6,10 @@ const createCategoryService = async (req) => {
     await CategoryModel.create(reqBody);
     return { status: "success", message: "data crate success" };
   } catch (error) {
-    return { status: "fail", message: "data crate fail" };
+    if (error.code === 11000) {
+      return { status: "fail", message: "Category name already exists" };
+    }
+    return { status: "fail", message: "Data creation failed" };
   }
 };
 
