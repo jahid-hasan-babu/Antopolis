@@ -7,8 +7,8 @@ const DataSchema = Schema(
     categoryName: {
       type: String,
       required: true,
-      trim: true,
       unique: true,
+      trim: true,
     },
   },
   { timestamps: true, versionKey: false }
