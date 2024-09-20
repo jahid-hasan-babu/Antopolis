@@ -18,20 +18,20 @@ export default function Category() {
 
   const handleSave = async () => {
     try {
-      await categoryCrateRequest(categoryData);
-      toast.success("Category created successfully!");
+      const res = await categoryCrateRequest(categoryData);
 
-      // Delay the navigation to allow the toast message to be seen
-      setTimeout(() => {
-        router.push("/");
-      }, 5000);
-    } catch (error) {
-      if (error.response && error.response.status === 400) {
-        // Duplicate category error from the backend
-        toast.error("Category already exists!");
+      if (res.data.status === "success") {
+        toast.success("Category created successfully!");
+
+        // Delay the navigation to allow the toast message to be seen
+        setTimeout(() => {
+          router.push("/");
+        }, 5000);
       } else {
-        toast.error("Failed to create category.");
+        toast.error(res.data.message);
       }
+    } catch (error) {
+      toast.error("Failed to create category.");
     }
   };
 
